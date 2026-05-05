@@ -6,11 +6,20 @@ import { Injectable } from '@angular/core';
 })
 export class CategoryService {
 
-  private apiUrl = 'http://localhost:8080/api/v1/categories';
+  private apiUrl = 'http://localhost:8080/api/v1';
 
   constructor(private http: HttpClient) { }
 
   getCategories() {
-    return this.http.get(this.apiUrl);
+    const endpoint=`${this.apiUrl}/categories`;
+    return this.http.get(endpoint);
   }
+/**
+ * save the category
+ */
+saveCategories(body:any){
+  const endpoint = `${this.apiUrl}/categories`;
+  return this.http.post(endpoint,body); 
+}
+
 }

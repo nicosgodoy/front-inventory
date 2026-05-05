@@ -1,0 +1,16 @@
+.category-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.category-container > * {
+    width: 100%;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #ff5722 !important; /* Color naranja/rojo de la imagen */
+}
+
+::ng-deep .mat-form-field-underline {
+  background-color: #ff5722 !important;
+}
