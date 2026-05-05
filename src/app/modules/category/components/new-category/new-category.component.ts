@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/modules/shared/services/category.service';
 
 
@@ -13,17 +13,25 @@ import { CategoryService } from 'src/app/modules/shared/services/category.servic
 export class NewCategoryComponent implements OnInit {
   
   private fb = inject(FormBuilder);
-
   private categoryService = inject(CategoryService)
-
   private dialogRef = inject(MatDialogRef)
+  public data = inject(MAT_DIALOG_DATA)
+  public categoryForm!: FormGroup;
 
-  public categoryForm: FormGroup = this.fb.group({
+  estadoFormulario: string="Agregar"
+
+  ngOnInit(): void {
+    console.log(this.data);
+
+    this.categoryForm = this.fb.group({
       name: ['',Validators.required]  ,
       description: ['',Validators.required]
     })  ;
 
-  ngOnInit(): void {
+    if(this.data!=null){
+      this.updateForm(this.data); 
+      this.estadoFormulario="Actualizar"
+    }
   }
 
   onSave(){
@@ -32,17 +40,38 @@ export class NewCategoryComponent implements OnInit {
     description: this.categoryForm.get('description')?.value
   }
 
-  this.categoryService.saveCategories(data)
+  if (this.data != null) {
+    //update registry
+    this.categoryService.updateCategorie(data,this.data.id)
+  .subscribe((data:any) => {
+    this.dialogRef.close(1);
+  },(error: any) => {
+    this.dialogRef.close(2);
+  })
+  }else{
+    //create new registry
+    this.categoryService.saveCategories(data)
   .subscribe(data => {
     console.log("respuesta: ",data);
     this.dialogRef.close(1);
   },(error: any) => {
     this.dialogRef.close(2);
   })
+  }
+
+  
 }
 
   onCancel(){
     this.dialogRef.close(3);
   }
+  
+  updateForm(data:any){
+    this.categoryForm= this.fb.group({
+      name: [data.name,Validators.required]  ,
+      description: [data.description,Validators.required]
+    });
+  }
+
 
 }

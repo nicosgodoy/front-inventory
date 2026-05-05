@@ -22,4 +22,11 @@ saveCategories(body:any){
   return this.http.post(endpoint,body); 
 }
 
+/**
+ * update categories
+ */
+updateCategorie(body:any,id:any){
+  const endpoint = `${this.apiUrl}/categories/${id}`;
+  return this.http.put(endpoint,body); 
+}
 }

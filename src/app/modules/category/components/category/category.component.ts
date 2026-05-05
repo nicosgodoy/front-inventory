@@ -59,12 +59,28 @@ openCategoryDiualog() {
         this.getCategories();
       }else if(result == 2){
         this.openSnackBar('Se produjo un error al guardar la categoria', 'Error')
-        this.getCategories(); 
+       
       }
     });
   
 }
 
+edit(id:number,name:string,description: string){
+  const dialogRef = this.dialog.open(NewCategoryComponent , {
+    width: '450px',
+     data: {id: id, name: name, description: description},
+});
+dialogRef.afterClosed().subscribe((result:any) => {
+
+      if(result ==1){
+        this.openSnackBar('Categoria Actualizada con exito', 'Exitosa')
+        this.getCategories();
+      }else if(result == 2){
+        this.openSnackBar('Se produjo un error al Actualizar la categoria', 'Error')
+        this.getCategories(); 
+      }
+    });
+  }
 openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar>{
   return this.snackBar.open(message, action, {  
     duration: 2000
