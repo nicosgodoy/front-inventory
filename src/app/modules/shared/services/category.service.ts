@@ -33,6 +33,12 @@ updateCategorie(body:any,id:any){
 deleteCategorie(id:any){
   const endpoint = `${this.apiUrl}/categories/${id}`;
   return this.http.delete(endpoint); 
-
 }
+
+getCategorieById(id:any){
+  const endpoint = `${this.apiUrl}/categories/${id}`;
+  return this.http.get(endpoint); 
+}
+
+
 }

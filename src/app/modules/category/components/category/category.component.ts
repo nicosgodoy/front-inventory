@@ -5,6 +5,7 @@ import { CategoryService } from 'src/app/modules/shared/services/category.servic
 import { NewCategoryComponent } from '../new-category/new-category.component';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-category',
@@ -24,6 +25,8 @@ export class CategoryComponent implements OnInit{
 
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
   dataSource= new MatTableDataSource<CategoryElement>();
+
+  paginator!: MatPaginator;
 
   getCategories() {
     this.categoryService.getCategories()
@@ -99,6 +102,18 @@ dialogRef.afterClosed().subscribe((result:any) => {
       }
     });
 }
+
+buscar(termino: string){
+
+  if(termino.length === 0){
+    return this.getCategories();
+  }
+  this.categoryService.getCategorieById(termino)
+  .subscribe((data: any) =>{
+   this.processCategoryResponse(data);
+  },(error:any) => {
+    console.log("error: ",error);
+})}
 
 openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar>{
   return this.snackBar.open(message, action, {  
