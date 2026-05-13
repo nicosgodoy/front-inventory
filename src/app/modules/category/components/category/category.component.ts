@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild }  from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { CategoryService } from 'src/app/modules/shared/services/category.service';
@@ -26,6 +26,7 @@ export class CategoryComponent implements OnInit{
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
   dataSource= new MatTableDataSource<CategoryElement>();
 
+  @ViewChild(MatPaginator)
   paginator!: MatPaginator;
 
   getCategories() {
@@ -48,6 +49,7 @@ export class CategoryComponent implements OnInit{
       dataCategory.push(element);
     });
     this.dataSource = new MatTableDataSource<CategoryElement>(dataCategory);
+    this.dataSource.paginator = this.paginator;
     };
   }
 
