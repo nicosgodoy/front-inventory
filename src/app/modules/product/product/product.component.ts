@@ -111,6 +111,18 @@ private snackBar = inject(MatSnackBar);
 
     }
 
+    buscar(name: any){
+      if(name.length === 0){
+        return this.getProducts();
+      }
+      this.productService.getProductByName(name)
+      .subscribe((resp: any) =>{
+       this.processProductResponse(resp);
+      },(error:any) => {
+        console.log("error: ",error);
+    })
+    }
+
     openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar>{
       return this.snackBar.open(message, action, {  
         duration: 2000
