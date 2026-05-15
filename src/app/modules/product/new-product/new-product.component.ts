@@ -41,7 +41,21 @@ export class NewProductComponent implements OnInit {
     });
 
     this.getCategories();
+
+    if(this.data!=null){
+      this.updateForm(this.data); 
+      this.estadoFormulario="Actualizar"
+    }
   } 
+  updateForm(data: any) {
+    this.productForm = this.fb.group({
+      name: [data.name, Validators.required],
+      price: [data.price, Validators.required],
+      account: [data.account, Validators.required],
+      category: [data.category.id, Validators.required],
+      picture: ['', Validators.required],
+    });
+  }
 
   onSave(){
     let data = {
@@ -59,19 +73,30 @@ export class NewProductComponent implements OnInit {
     uploadImageData.append('account',data.account);
     uploadImageData.append('categoryId',data.category);
 
-    //call the service to save a product
-    this.productService.createProduct(uploadImageData)
-.subscribe({
-  next: (data:any) => {
-    this.dialogRef.close(1);
-  },
-  error: (error:any) => {
-     console.log(error);
-  console.log(error.error);
-    this.dialogRef.close(2);
-  }
-})
+    if(this.data != null){
+      //update the product
+      this.productService.updateProduct(uploadImageData, this.data.id)
+      .subscribe({
+        next: (data:any) => {
+          this.dialogRef.close(1);
+        },
+        error: (error:any) => {
+          this.dialogRef.close(2);
+        }
+      })
 
+    }else{
+      //create a new product
+      this.productService.createProduct(uploadImageData)
+      .subscribe({
+        next: (data:any) => {
+          this.dialogRef.close(1);
+        },
+        error: (error:any) => {
+          this.dialogRef.close(2);
+        }
+      })
+    }
   }
    
   onCancel(){
@@ -81,7 +106,6 @@ export class NewProductComponent implements OnInit {
   getCategories(){
     this.categoryService.getCategories()
   .subscribe({
-    
     next: (data: any) => {
       this.categories = data.categoryResponse.category;
     },
