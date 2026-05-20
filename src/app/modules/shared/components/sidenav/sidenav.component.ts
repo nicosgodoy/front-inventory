@@ -36,6 +36,8 @@ export class SidenavComponent implements OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
   }
 
+  shouldRun = true;
+
   
 
 }
