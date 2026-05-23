@@ -127,8 +127,34 @@ openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar>{
     duration: 2000
   })
 }
-}
 
+exportExcel(){
+  this.categoryService.exportCategories()
+  .subscribe({
+    next: (data: Blob) => {
+      try {
+        const fileUrl = URL.createObjectURL(data);
+        const anchor = document.createElement("a");
+        anchor.download = "categorias.xlsx";
+        anchor.href = fileUrl;
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
+        URL.revokeObjectURL(fileUrl);
+        
+        this.openSnackBar('Archivo exportado correctamente', 'Exitosa');
+      } catch (error) {
+        console.error('Error al crear la descarga:', error);
+        this.openSnackBar('Error al procesar el archivo', 'Error');
+      }
+    },
+    error: (error: any) => {
+      console.error('Error en la exportación:', error);
+      this.openSnackBar('Error al exportar el archivo', 'Error');
+    }
+  });
+}
+}
 export interface CategoryElement {
   id: number;
   name: string;

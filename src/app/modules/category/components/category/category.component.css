@@ -7,8 +7,14 @@ table {
     text-align: center;
 }
 
+ul {
+    display: flex;
+    align-items: center;
+}
+
 ul li {
     list-style: none;
+    margin-right: 10px;
 }
 
 .right {
@@ -24,3 +30,5 @@ mat-form-field {
 .mat-header-cell:nth-child(1) {
     flex: 0 0 6%;
 }
+
+

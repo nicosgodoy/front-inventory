@@ -40,5 +40,12 @@ getCategorieById(id:any){
   return this.http.get(endpoint); 
 }
 
+exportCategories(){
+  const endpoint = `${this.apiUrl}/categories/export/excel`;
+  return this.http.get(endpoint,{
+    responseType: 'blob'
+  });
+}
+
 
 }

@@ -134,6 +134,33 @@ isAdmin: any;
       })
     }
 
+    exportExcel(){
+  this.productService.exportproducts()
+  .subscribe({
+    next: (data: Blob) => {
+      try {
+        const fileUrl = URL.createObjectURL(data);
+        const anchor = document.createElement("a");
+        anchor.download = "productos.xlsx";
+        anchor.href = fileUrl;
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
+        URL.revokeObjectURL(fileUrl);
+        
+        this.openSnackBar('Archivo exportado correctamente', 'Exitosa');
+      } catch (error) {
+        console.error('Error al crear la descarga:', error);
+        this.openSnackBar('Error al procesar el archivo', 'Error');
+      }
+    },
+    error: (error: any) => {
+      console.error('Error en la exportación:', error);
+      this.openSnackBar('Error al exportar el archivo', 'Error');
+    }
+  });
+}
+
 }
 
 export interface ProductElement {
